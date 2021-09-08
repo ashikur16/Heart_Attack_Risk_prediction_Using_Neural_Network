@@ -151,6 +151,65 @@ def users_test(mlp,user_test):
 
 
 
+# Plottings
+
+### Splitting of train and test dataset
+
+
+def test_train_ration_bar_chart(train,test):
+    y = [len(train), len(test)]
+    x = [0, 1]
+
+    tick_label = ['Train Dataset', 'Test Dataset']
+
+    plt.bar(x, y, tick_label=tick_label, width=0.6, color=['red', 'blue'])
+
+    plt.title("Splitting The Dataset")
+    plt.ylabel('Count Of The Dataset')
+    plt.show()
+
+
+
+### Pie Chart According to Exercise
+
+def exercise_pie_chart(data):
+    do_exercise = data.loc[(data['exng'] == 1) & (data['output'] == 1)]
+    no_exercise = data.loc[(data['exng'] == 0) & (data['output'] == 1)]
+
+    percentage_do_exercise = (do_exercise['output'].sum() / len(data.index)) * 100
+    percentage_no_exercise = (no_exercise['output'].sum() / len(data.index)) * 100
+
+    explode = (0.05, 0.05)
+    label = 'Heart Attack Risk With Exercise', 'Heart Attack Risk Without Exercise'
+    perc = [percentage_do_exercise, percentage_no_exercise]
+
+    plt.pie(perc, explode=explode, labels=label, autopct='%1.2f%%', shadow=True)
+    plt.axis('equal')
+    plt.title('Percentage of Heart Attack Risk: Who Performs Exercise vs Who Does not Perform Exercise\n')
+    plt.show()
+
+
+
+### Heart Attack Number of Different Age Range in Dataset
+def age_range_heartAttack_BarChart(data):
+    age_ten_thirty = data.loc[(data['age'] >= 10) & (data['age'] <= 30) & (data['output'] == 1)]
+    age_thirtyone_fifty = data.loc[(data['age'] >= 31) & (data['age'] <= 50) & (data['output'] == 1)]
+    age_fiftyone_seventy = data.loc[(data['age'] >= 51) & (data['age'] <= 70) & (data['output'] == 1)]
+    age_fiftyone_ninty = data.loc[(data['age'] >= 71) & (data['age'] <= 90) & (data['output'] == 1)]
+
+    y = [len(age_ten_thirty), len(age_thirtyone_fifty), len(age_fiftyone_seventy), len(age_fiftyone_ninty)]
+    x = [0, 1, 2, 3]
+
+    tick_label = ['10 - 30', '31 - 50', '51 - 70', '71 - 90']
+
+    plt.bar(x, y, tick_label=tick_label, width=0.6, color=['Green', 'purple', 'red', 'blue'])
+
+    plt.ylabel("Number Of People Who Got Heart Attack")
+    plt.xlabel('Age')
+    plt.title('Age Wise Heart Attack Prediction')
+    plt.show()
+
+
 if __name__ == '__main__':
 
     user_test = [[23, 1, 3, 120, 200, 1, 140, 1, 0, 2.3, 0, 0, 1]]
@@ -193,5 +252,12 @@ if __name__ == '__main__':
     print()
 
     users_test(mlp, user_test)
+
+    # plottings
+    test_train_ration_bar_chart(train, test)
+
+    exercise_pie_chart(data)
+
+    age_range_heartAttack_BarChart(data)
 
 
