@@ -71,6 +71,69 @@ def data_is_anyMissingData(data):
 
 
 
+# Setting up the features with the columns of dataset except 'output'
+
+def get_features(data):
+    features = data.columns
+    features = [i for i in features if i != 'output']
+    # display columns of the feature
+    print(features)
+    return features
+
+
+
+# Splitting the dataset into train and test dataset
+def data_split_test_train(data):
+    train, test = train_test_split(data, test_size=0.25)  # Train dataset is 75% of actual dataset
+    print("Length Of Actual Heart Dataset: ", len(data))
+    print("Length Of Train Dataset: ", len(train))
+    print("Length Of Test Dataset: ", len(test))
+    return train,test
+
+
+
+# Setting Up The Train and Test Dataset Into x And y
+
+def set_XY(train,test,features):
+    x_train = train[features]
+    y_train = train["output"]
+
+    x_test = test[features]
+    y_test = test["output"]
+
+    return x_train,x_test,y_train,y_test
+
+
+### Creating the neural network model
+
+def NNModel():
+    mlp = MLPClassifier(hidden_layer_sizes=(20, 20, 20), max_iter=900, activation='relu')
+    return mlp
+
+
+### Fitting the train and test dataset in the model
+
+def fitModel(x_train,y_train,mlp):
+    mlp = mlp.fit(x_train, y_train)
+    return mlp
+
+
+
+### Prediction according to neural network algorithm
+
+def get_prediction(mlp,x_test):
+    y_pred = mlp.predict(x_test)
+    print(y_pred)
+    return y_pred
+
+### Determining the Accuracy for Neural Network
+
+def model_accuracy(y_test, y_pred):
+    score_NN = accuracy_score(y_test, y_pred) * 100
+    print("Accuracy using Neural Network: ", round(score_NN, 4), "%")
+    return score_NN
+
+
 if __name__ == '__main__':
 
 
@@ -85,4 +148,18 @@ if __name__ == '__main__':
     data_is_anyMissingData(data)
     print()
     data=data_cleaning(data)
+    print()
+
+    features = get_features(data)
+    print()
+    train, test = data_split_test_train(data)
+    print()
+    x_train, x_test, y_train, y_test = set_XY(train, test, features)
+    print()
+    mlp = NNModel()
+    mlp = fitModel(x_train, y_train, mlp)
+    print()
+    y_pred = get_prediction(mlp, x_test)
+    print()
+    score_NN = model_accuracy(y_test, y_pred)
     print()
