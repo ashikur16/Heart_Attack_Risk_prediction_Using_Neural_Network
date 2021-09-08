@@ -133,10 +133,36 @@ def model_accuracy(y_test, y_pred):
     print("Accuracy using Neural Network: ", round(score_NN, 4), "%")
     return score_NN
 
+### Confusion Matrix For Neural Network Algorithm
+
+def get_confusion_matrix(y_test, y_pred):
+    conf_mat = confusion_matrix(y_test, y_pred)
+    print("Confusion Matrix for Neural Network: ")
+    print(conf_mat)
+    return conf_mat
+
+def users_test(mlp,user_test):
+    user_pred = mlp.predict(user_test)
+    if user_pred[0]==1:
+        print("There is Heart Risk. Consult With Doctor ASAP")
+    elif user_pred[0]==0:
+        print("Good News,You have no Heart Attack Risk. But Keep in touch with your Doctor")
+    # print("\n\nUSer Prediction:\n", user_pred)
+
+
 
 if __name__ == '__main__':
 
+    user_test = [[23, 1, 3, 120, 200, 1, 140, 1, 0, 2.3, 0, 0, 1]]
+    NumberOfParam = len(sys.argv)
 
+    for i in range(1, NumberOfParam):
+        if sys.argv[i].replace(' ', '') == "-ui":
+            user_test = (sys.argv[i + 1]).strip('[]')
+
+            user_test = list(map(float, user_test.split(",")))
+
+            user_test = [user_test]
 
 
     filename="heart.csv"
@@ -161,5 +187,11 @@ if __name__ == '__main__':
     print()
     y_pred = get_prediction(mlp, x_test)
     print()
+    conf_mat = get_confusion_matrix(y_test, y_pred)
+    print()
     score_NN = model_accuracy(y_test, y_pred)
     print()
+
+    users_test(mlp, user_test)
+
+
